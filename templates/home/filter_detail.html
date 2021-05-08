@@ -15,9 +15,9 @@
     .classed("text", true)
     .text(filter_id + " 조건식의 종목 차트 페이지")
 
-    let FILTER_API_URL = "stock/filter/"
+    let FILTER_API_URL = "api/filter/"
 
-    d3.json(FILTER_API_URL + filter_id)
+    d3.json(location.origin+"/"+FILTER_API_URL + filter_id)
     .then(function(raw){
         let data = raw.data[0];
         let num = raw.data[0].stock_name;
