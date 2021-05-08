@@ -7,14 +7,12 @@
 <script>
     "use strict"
 
-    const host = location.protocol + "//" + location.host + "/"
+    let FILTER_API_URL = "stock/filter/"
 
-    let filter_api_url = host + "stock/filter/"
+    let FILTER_DETAIL_URL = "filter/"
+    let STOCK_DETAIL_URL = "stock/"
 
-    let filter_detail_url = host + "filter/"
-    let stock_detail_url = host + "stock/"
-
-    d3.json(filter_api_url + strfdate(new Date("2021-05-09")))
+    d3.json(FILTER_API_URL + strfdate(new Date("2021-05-09")))
     .then(function(data){
         for(let i in data['data']){
             append_card(d3.select(".container"),data['data'][i]);
@@ -32,7 +30,7 @@
         .text(data['condition_name'])
         .on("click", ()=>{
             // console.log(chart_url, data['condition_name']);
-            location.href = filter_detail_url+data['condition_name']
+            location.href = FILTER_DETAIL_URL + data['condition_name']
         })
 
         let content = card.append("div")
@@ -42,6 +40,8 @@
         .selectAll("li")
         .data(data['stock_name'])
         .join("li")
+        .append("a")
+        .attr("href", STOCK_DETAIL_URL + data['stock_code'])
         .text(d=>d)
     };
 

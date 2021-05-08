@@ -7,17 +7,18 @@
 <script>
     "use strict"
 
+    let path = location.pathname.split("/")
+    let stock_code = path[path.length-1]
+
     d3.select(".container")
     .append("h2")
     .classed("text", true)
-    .text("종목 세부 페이지")
+    .text(stock_code +" 종목 세부 페이지")
 
-    let chart_url = "http://127.0.0.1:8000/stock/filter/"
-                 + location.href.split("/")[4]
-                 + '/'
-                 + strfdate(new Date("2021-05-03"))
+
+    let STOCK_API_URL = "stock/price/"
     
-    d3.json(chart_url)
+    d3.json(STOCK_API_URL + stock_code)
     .then(function(raw){
         let data = raw.data[0];
         let num = raw.data[0].stock_name;

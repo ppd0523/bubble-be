@@ -19,7 +19,9 @@ body{
     margin-left: 1em;
 }
 
-.text{
+a:link{text-decoration: none;}
+
+.text, a:visited{
     color: white;
 }
 
