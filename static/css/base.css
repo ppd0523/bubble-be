@@ -1,0 +1,38 @@
+body{
+    background-color: #2b2b2b;
+}
+
+.card {
+    height: 200px;
+}
+
+.noselect{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.title{
+    margin-left: 1em;
+}
+
+.text{
+    color: white;
+}
+
+.content ul{
+    padding: 0;
+    list-style-type:none;
+}
+
+.content li{
+    float: left;
+    margin-left: 0.5em;
+}
+
+hr{
+    clear: both;
+}

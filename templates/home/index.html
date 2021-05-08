@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container"></div>
+
+{% endblock  %}
+{% block script %}
+<script>
+    "use strict"
+
+    const host = location.protocol + "//" + location.host + "/"
+
+    let filter_api_url = host + "stock/filter/"
+
+    let filter_detail_url = host + "filter/"
+    let stock_detail_url = host + "stock/"
+
+    d3.json(filter_api_url + strfdate(new Date("2021-05-09")))
+    .then(function(data){
+        for(let i in data['data']){
+            append_card(d3.select(".container"),data['data'][i]);
+        }
+    });
+
+    function append_card(container, data){
+        let card = container.append("div").classed("card", true)
+        card.append("hr");
+        
+        let title = card.append("div")
+        title.classed("title", true)
+        .classed("text", true)
+        .append("h2")
+        .text(data['condition_name'])
+        .on("click", ()=>{
+            // console.log(chart_url, data['condition_name']);
+            location.href = filter_detail_url+data['condition_name']
+        })
+
+        let content = card.append("div")
+        content.classed("content", true)
+        .classed("text", true)
+        .append("ul")
+        .selectAll("li")
+        .data(data['stock_name'])
+        .join("li")
+        .text(d=>d)
+    };
+
+
+
+</script>
+{% endblock %}
