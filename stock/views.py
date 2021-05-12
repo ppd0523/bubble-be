@@ -1,25 +1,28 @@
 # -*- coding: utf-8 -*-
 from django.http import JsonResponse
-from .serializers import FilterEncoder, StockEncoder
+from .serializers import *
 from rest_framework.decorators import api_view
-from .models import Filter
+from .models import *
 
 
 @api_view(['GET'])
-def filter(request, filter_id, date):
-    qs = Filter.objects.filter(condition_name=filter_id, create_date=date)
-    encoder = FilterEncoder
-
+def report(request, filter_id, date):
+    kq = Filter.objects.get(filter_id=filter_id)
+    qs = Report.objects.filter(filter_id=kq, create_date=date)
+    serializer = ReportSerializer(qs, many=True)
     kwargs = {}
-    response = JsonResponse(qs, encoder, safe=False, json_dumps_params={'ensure_ascii': False}, **kwargs)
-
-    response['Access-Control-Allow-Origin'] = '*'
-    return response
-
+    return JsonResponse(serializer.data, safe=False, json_dumps_params={'ensure_ascii': False}, **kwargs)
 
 
 @api_view(['GET'])
-def price(request, start, end):
-    return {'start': start, 'end': end}
+def price(request, stock_code):
+    kwargs = {}
+    return JsonResponse({}, safe=False, json_dumps_params={'ensure_ascii': False}, **kwargs)
 
 
+@api_view(['GET'])
+def filter_info(request):
+    qs = Filter.objects.all()
+    serializer = FilterSerializer(qs, many=True)
+    kwargs = {}
+    return JsonResponse(serializer.data, safe=False, json_dumps_params={'ensure_ascii': False}, **kwargs)
