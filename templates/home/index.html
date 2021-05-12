@@ -12,7 +12,7 @@
     let FILTER_DETAIL_URL = "filter/"
     let STOCK_DETAIL_URL = "stock/"
 
-    d3.json(FILTER_API_URL + strfdate(new Date("2021-05-09")))
+    d3.json(FILTER_API_URL + "0/" +strfdate(new Date("2021-05-03")))
     .then(function(data){
         for(let i in data['data']){
             append_card(d3.select(".container"),data['data'][i]);
@@ -29,8 +29,8 @@
         .append("h2")
         .text(data['condition_name'])
         .on("click", ()=>{
-            // console.log(chart_url, data['condition_name']);
-            location.href = FILTER_DETAIL_URL + data['condition_name']
+            // 조건식 결과 상세 페이지 링크
+            // location.href = FILTER_DETAIL_URL + data['condition_name']
         })
 
         let content = card.append("div")
