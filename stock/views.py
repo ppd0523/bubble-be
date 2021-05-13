@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
-from django.http import JsonResponse
 from .serializers import *
-from rest_framework.decorators import api_view
 from .models import *
-from rest_framework import viewsets
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 
-class ReportListView(ListAPIView):
+class ReportListView(ListCreateAPIView):
     serializer_class = ReportSerializer
     model = serializer_class.Meta.model
 
@@ -19,47 +16,19 @@ class ReportListView(ListAPIView):
         return queryset
 
 
-class FilterListView(ListAPIView):
+class FilterListView(ListCreateAPIView):
     queryset = Filter.objects.all()
     serializer_class = FilterSerializer
 
 
-class FilterDetailListView(RetrieveAPIView):
-    lookup_field = 'filter_id'
-    queryset = Filter.objects.all()
-    serializer_class = FilterDetailSerializer
-
-
-class FilterView(viewsets.ModelViewSet):
+class FilterDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Filter.objects.all()
     serializer_class = FilterSerializer
+    print('1', queryset)
 
-
-class ReportView(viewsets.ModelViewSet):
-    kq = Filter.objects.get(filter_id='000')
-    import datetime as dt
-    queryset = Report.objects.filter(filter_id=kq, create_date=dt.datetime.strptime('2021-05-13', '%Y-%m-%d'))
-    serializer_class = ReportSerializer
-
-
-@api_view(['GET', 'POST'])
-def report(request, filter_id, date):
-    kq = Filter.objects.get(filter_id=filter_id)
-    qs = Report.objects.filter(filter_id=kq, create_date=date)
-    serializer = ReportSerializer(qs, many=True)
-    kwargs = {}
-    return JsonResponse(serializer.data, safe=False, json_dumps_params={'ensure_ascii': False}, **kwargs)
-
-
-@api_view(['GET'])
-def price(request, stock_code):
-    kwargs = {}
-    return JsonResponse({}, safe=False, json_dumps_params={'ensure_ascii': False}, **kwargs)
-
-
-@api_view(['GET'])
-def filter_info(request):
-    qs = Filter.objects.all()
-    serializer = FilterSerializer(qs, many=True)
-    kwargs = {}
-    return JsonResponse(serializer.data, safe=False, json_dumps_params={'ensure_ascii': False}, **kwargs)
+    def get_object(self):
+        queryset = self.get_queryset()
+        filter_id = self.kwargs['filter_id']
+        q = queryset.get(filter_id=filter_id)
+        # q = get_object_or_404(queryset, filter_id=filter_id)
+        return q

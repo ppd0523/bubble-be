@@ -1,17 +1,17 @@
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
 
-def index(request):
-    return render(request, 'home/index.html')
+class IndexView(TemplateView):
+    template_name = 'home/index.html'
 
 
-def filter_detail(request):
-    return render(request, 'home/filter_detail.html')
+class FilterDetailView(TemplateView):
+    template_name = 'home/filter_detail.html'
 
 
-def stock_detail(request):
-    return render(request, 'home/stock_detail.html')
+class StockDetailView(TemplateView):
+    template_name = 'home/stock_detail.html'
 
 
-def favorite_detail(request):
-    return render(request, 'home/filter_detail.html')
+class FavoriteDetailView(TemplateView):
+    template_name = 'home/filter_detail.html'

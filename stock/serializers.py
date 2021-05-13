@@ -14,17 +14,7 @@ class FilterSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class FilterDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Filter
-        fields = '__all__'
-
-
 class PriceSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Price
         fields = '__all__'
-
-
-class EmptySerializer(serializers.ModelSerializer):
-    pass
