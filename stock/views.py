@@ -4,7 +4,7 @@ from .models import *
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 
-class ReportListView(ListCreateAPIView):
+class ReportView(ListCreateAPIView):
     serializer_class = ReportSerializer
     model = serializer_class.Meta.model
 
@@ -16,7 +16,7 @@ class ReportListView(ListCreateAPIView):
         return queryset
 
 
-class FilterListView(ListCreateAPIView):
+class FilterView(ListCreateAPIView):
     queryset = Filter.objects.all()
     serializer_class = FilterSerializer
 
@@ -24,7 +24,6 @@ class FilterListView(ListCreateAPIView):
 class FilterDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Filter.objects.all()
     serializer_class = FilterSerializer
-    print('1', queryset)
 
     def get_object(self):
         queryset = self.get_queryset()

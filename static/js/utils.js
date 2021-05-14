@@ -6,5 +6,3 @@ function strfdate(date){
     day = day >= 10 ? day : '0' + day
     return year + '-' + month + '-' + day
 }
-
-// console.log(strfdate(new Date("2021-05-02")))
