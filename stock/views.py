@@ -31,3 +31,13 @@ class FilterDetailView(RetrieveUpdateDestroyAPIView):
         q = queryset.get(filter_id=filter_id)
         # q = get_object_or_404(queryset, filter_id=filter_id)
         return q
+
+
+class PriceView(ListCreateAPIView):
+    serializer_class = PriceSerializer
+    model = serializer_class.Meta.model
+
+    def get_queryset(self):
+        stock_code = self.kwargs['stock_code']
+        queryset = Price.objects.filter(stock_code=stock_code).order_by('create_date')
+        return queryset

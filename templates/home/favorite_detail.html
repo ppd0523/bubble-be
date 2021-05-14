@@ -1,17 +1,12 @@
 {% extends 'base.html' %}
+
+{% load static %}
+
 {% block content %}
 <div class="container"></div>
-
 {% endblock  %}
+
 {% block script %}
-<script>
-    "use strict"
-
-    d3.select(".container")
-    .append("h2")
-    .classed("text", true)
-    .text("즐겨찾기 페이지")
-
-
-</script>
+<script src="{% static 'js/utils.js' %}"></script>
+<script src="{% static 'js/favorite_detail_main.js' %}"></script>
 {% endblock %}

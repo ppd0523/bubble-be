@@ -1,42 +1,12 @@
 {% extends 'base.html' %}
+
+{% load static %}
+
 {% block content %}
 <div class="container"></div>
-
 {% endblock  %}
+
 {% block script %}
-<script>
-    "use strict"
-
-    let path = location.pathname.split("/")
-    let stock_code = path[path.length-1]
-
-    d3.select(".container")
-    .append("h2")
-    .classed("text", true)
-    .text(stock_code +" 종목 세부 페이지")
-
-
-    let STOCK_API_URL = "stock/price/"
-    
-    d3.json(STOCK_API_URL + stock_code)
-    .then(function(raw){
-        let data = raw.data[0];
-        let num = raw.data[0].stock_name;
-        for(let i in num){
-            console.log(data.stock_name[i])
-            console.log(data.stock_code[i])
-            append_chart(d3.select(".container"), data.stock_name[i])
-        }
-        
-    });
-
-    function append_chart(container, data){
-        let chart = container.append("div").classed("chart", true)
-        chart.append("g");
-
-    };
-
-
-
-</script>
+<script src="{% static 'js/utils.js' %}"></script>
+<script src="{% static 'js/stock_detail_main.js' %}"></script>
 {% endblock %}

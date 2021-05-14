@@ -13,8 +13,8 @@ class Filter(models.Model):
 
 class Report(models.Model):
     filter_id = models.ForeignKey(Filter, on_delete=models.CASCADE, null=False)
-    stock_code = models.CharField(max_length=10, null=True, blank=True)
-    stock_name = models.CharField(max_length=20, null=True, blank=True)
+    stock_code = models.CharField(max_length=10)
+    stock_name = models.CharField(max_length=20)
     create_date = models.DateField()
 
     def __str__(self):
@@ -23,13 +23,14 @@ class Report(models.Model):
 
 class Price(models.Model):
     stock_code = models.CharField(max_length=10)
-    high_price = models.FloatField()
-    low_price = models.FloatField()
-    open_price = models.FloatField()
-    close_price = models.FloatField()
-    volume = models.FloatField()
-    adj_close_price = models.FloatField()
+    stock_name = models.CharField(max_length=20)
+    high_price = models.IntegerField()
+    low_price = models.IntegerField()
+    open_price = models.IntegerField()
+    close_price = models.IntegerField()
+    volume = models.IntegerField()
+    adj_close_price = models.IntegerField()
     create_date = models.DateField()
 
     def __str__(self):
-        return f'{self.stock_code} {self.open_price} {self.close_price}'
+        return f'{self.stock_name} {self.adj_close_price}'

@@ -1,41 +1,12 @@
 {% extends 'base.html' %}
+
+{% load static %}
+
 {% block content %}
 <div class="container"></div>
-
 {% endblock  %}
+
 {% block script %}
-<script>
-    "use strict"
-
-    let path = location.pathname.split("/")
-    let filter_id = path[path.length-1]
-
-    d3.select(".container")
-    .append("h2")
-    .classed("text", true)
-    .text(filter_id + " 조건식의 종목 차트 페이지")
-
-    let FILTER_API_URL = "api/filter/"
-
-    d3.json(location.origin+"/"+FILTER_API_URL + filter_id)
-    .then(function(raw){
-        let data = raw.data[0];
-        let num = raw.data[0].stock_name;
-        for(let i in num){
-            console.log(data.stock_name[i])
-            console.log(data.stock_code[i])
-            append_chart(d3.select(".container"), data.stock_name[i])
-        }
-        
-    });
-
-    function append_chart(container, data){
-        let chart = container.append("div").classed("chart", true)
-        chart.append("g");
-
-    };
-
-
-
-</script>
+<script src="{% static 'js/utils.js' %}"></script>
+<script src="{% static 'js/filter_detail_main.js' %}"></script>
 {% endblock %}
