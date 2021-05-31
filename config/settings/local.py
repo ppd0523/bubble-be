@@ -1,4 +1,6 @@
+from django.conf import settings
 from .base import *
+
 
 ALLOWED_HOSTS = ['*']
 DEBUG = True

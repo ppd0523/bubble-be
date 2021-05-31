@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'stock.apps.StockConfig',
-    'home.apps.HomeConfig',
     'debug_toolbar',
 ]
 
@@ -58,7 +57,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR/'templates'],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,7 +80,15 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    },
+    'postresql': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME':,
+        # 'USER':,
+        # 'PASSWORD':,
+        # 'HOST':,
+        # 'PORT',
+    },
 }
 
 
@@ -125,5 +132,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR/'static',
 ]
+STATIC_ROOT = BASE_DIR/'.static_root'
+
 
 CORS_ALLOW_ALL_ORIGINS = True
