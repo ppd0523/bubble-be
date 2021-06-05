@@ -87,7 +87,7 @@ DATABASES = {
         'NAME': key.DB_NAME,
         'USER': key.DB_USER,
         'PASSWORD': key.DB_PASSWORD,
-        'HOST': 'POSTGRES_ADDR',
+        'HOST': 'POSTGRESQL_ADDR',
         'PORT': '5432',
     },
 }
@@ -131,7 +131,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    BASE_DIR/'static',
 ]
 STATIC_ROOT = BASE_DIR/'.static_root'
 
