@@ -6,6 +6,7 @@ class Filter(models.Model):
     filter_id = models.CharField(max_length=3, unique=True)
     filter_name = models.CharField(max_length=20)
     filter_title = models.CharField(max_length=50, blank=True)
+    filter_date = models.DateField()
 
     def __str__(self):
         return f'{self.filter_id} {self.filter_name}'
@@ -33,4 +34,12 @@ class Price(models.Model):
     create_date = models.DateField()
 
     def __str__(self):
-        return f'{self.stock_name} {self.adj_close_price}'
+        return f'{self.create_date} {self.stock_name} {self.adj_close_price}'
+
+
+class DateRange(models.Model):
+    begin_date = models.DateField()
+    end_date = models.DateField()
+
+    def __str__(self):
+        return f'{self.begin_date} {self.end_date}'

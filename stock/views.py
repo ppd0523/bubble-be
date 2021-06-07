@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from .serializers import *
 from .models import *
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
+from django.http import JsonResponse
 
 
 class ReportView(ListCreateAPIView):
@@ -26,9 +27,8 @@ class FilterDetailView(RetrieveUpdateDestroyAPIView):
     serializer_class = FilterSerializer
 
     def get_object(self):
-        queryset = self.get_queryset()
         filter_id = self.kwargs['filter_id']
-        q = queryset.get(filter_id=filter_id)
+        q = Filter.objects.get(filter_id=filter_id)
         # q = get_object_or_404(queryset, filter_id=filter_id)
         return q
 
@@ -41,3 +41,16 @@ class PriceView(ListCreateAPIView):
         stock_code = self.kwargs['stock_code']
         queryset = Price.objects.filter(stock_code=stock_code).order_by('create_date')
         return queryset
+
+
+class PriceDateRange(RetrieveUpdateAPIView):
+    serializer_class = RangePriceDateSerializer
+    model = serializer_class.Meta.model
+
+    def get_object(self):
+        stock_code = self.kwargs['stock_code']
+        queryset = Price.objects.filter(stock_code=stock_code)
+        begin = queryset.earliest('create_date').create_date
+        end = queryset.latest('create_date').create_date
+        q = DateRange(begin_date=begin, end_date=end)
+        return q
