@@ -2,7 +2,11 @@
 from .serializers import *
 from .models import *
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
-from django.http import JsonResponse
+from django.http import HttpResponse
+from sslog.logger import SimpleLogger
+import logging
+logger = SimpleLogger()
+logger.setLevel(logging.INFO)
 
 
 class ReportView(ListCreateAPIView):
@@ -15,6 +19,34 @@ class ReportView(ListCreateAPIView):
         key_q = Filter.objects.get(filter_id=foreign_key)
         queryset = Report.objects.filter(filter_id=key_q, create_date=date)
         return queryset
+
+    def post(self, request, *args, **kwargs):
+        try:
+            foreign_key = self.kwargs['filter_id']
+            create_date = self.kwargs['date']
+            key_q = Filter.objects.get(filter_id=foreign_key)
+        except Exception as e:
+            return HttpResponse(status=400, content='url error')
+
+        print(request.data)
+        try:
+            stock_codes = request.data['stock_codes']
+            stock_names = request.data['stock_names']
+            if len(stock_codes) != len(stock_names):
+                raise Exception('Not matched stock_code and stock_name')
+            for stock_code, stock_name in zip(stock_codes, stock_names):
+                Report.objects.create(
+                    filter_id=key_q,
+                    create_date=create_date,
+                    stock_code=stock_code,
+                    stock_name=stock_name
+                )
+        except KeyError as e:
+            return HttpResponse(status=400, content='key error')
+        except Exception as e:
+            return HttpResponse(status=400, content=e.message)
+
+        return HttpResponse(status=201, content='create successed')
 
 
 class FilterView(ListCreateAPIView):
