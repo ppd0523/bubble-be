@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'stock.apps.StockConfig',
+    'rest_framework.authtoken',
+    'rest_auth',
     'debug_toolbar',
 ]
 
@@ -77,19 +79,18 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {},
-    # 'sqlite': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # },
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': key.DB_NAME,
-        'USER': key.DB_USER,
-        'PASSWORD': key.DB_PASSWORD,
-        'HOST': 'POSTGRESQL_ADDR',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     },
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': key.DB_NAME,
+    #     'USER': key.DB_USER,
+    #     'PASSWORD': key.DB_PASSWORD,
+    #     'HOST': 'POSTGRESQL_ADDR',
+    #     'PORT': '5432',
+    # },
 }
 
 
@@ -136,3 +137,9 @@ STATIC_ROOT = BASE_DIR/'.static_root'
 
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}

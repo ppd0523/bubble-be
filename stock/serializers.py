@@ -23,4 +23,4 @@ class PriceSerializer(serializers.ModelSerializer):
 class RangePriceDateSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.DateRange
-        fields = '__all__'
+        fields = ('begin_date', 'end_date')

@@ -2,6 +2,7 @@
 from .serializers import *
 from .models import *
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
+from rest_framework import permissions
 from django.http import HttpResponse
 from sslog.logger import SimpleLogger
 import logging
@@ -12,6 +13,7 @@ logger.setLevel(logging.INFO)
 class ReportView(ListCreateAPIView):
     serializer_class = ReportSerializer
     model = serializer_class.Meta.model
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         foreign_key = self.kwargs['filter_id']

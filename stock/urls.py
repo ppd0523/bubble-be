@@ -9,5 +9,5 @@ urlpatterns = [
     url(r'filter/$', views.FilterView.as_view()),
 
     url(r'stock/(?P<stock_code>\d{6,8})/price/$', views.PriceView.as_view()),
-    url(r'stock/(?P<stock_code>\d{6,8})/date/range/$', views.PriceDateRange.as_view()),
+    url(r'stock/(?P<stock_code>\d{6,8})/extent/$', views.PriceDateRange.as_view()),
 ]
