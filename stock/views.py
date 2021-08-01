@@ -9,7 +9,25 @@ import logging
 logger = SimpleLogger()
 logger.setLevel(logging.INFO)
 
+# Login/Logout
+# curl -XPOST http://localhost:52222/auth/login/
+# -H'Content-Type: application/json' -d '{
+# "username": "asdf", "password": "asdf"}'
 
+# curl -XPOST http://localhost:52222/auth/logout/
+# -H'Content-Type: application/json' -d '{
+# "username": "asdf"}'
+
+
+# Create report
+# curl -XPOST -H'Content-Type: application/json'
+# -H'Authorization: Token ~~~'
+# http://localhost:52222/api/filter/<filter_id>/report/<date>/ -d '
+# { "stock_codes":["", ""], "stock_names": ["", ""] }'
+
+# Read report
+# curl -XGET -H'Content-Type: application/json'
+# http://localhost:52222/api/filter/<filter_id>/report/<date>/
 class ReportView(ListCreateAPIView):
     serializer_class = ReportSerializer
     model = serializer_class.Meta.model
@@ -30,7 +48,6 @@ class ReportView(ListCreateAPIView):
         except Exception as e:
             return HttpResponse(status=400, content='url error')
 
-        print(request.data)
         try:
             stock_codes = request.data['stock_codes']
             stock_names = request.data['stock_names']
@@ -51,14 +68,34 @@ class ReportView(ListCreateAPIView):
         return HttpResponse(status=201, content='create successed')
 
 
+# Read filter
+# curl -XGET -H'Content-Type: application/json'
+# http://localhost:52222/api/filter/<filter_id>/
+
+# Create filter
+# curl -XPOST -H'Content-Type: application/json'
+# -H'Authorization: Token ~~~'
+# http://localhost:52222/api/filter/
+# { "filter_id": "000", "filter_name": "키움저장이름",
+# "filter_title":"잘나가는종목", "create_date": "2021-07-31" }'
 class FilterView(ListCreateAPIView):
     queryset = Filter.objects.all()
     serializer_class = FilterSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
+# curl -XPOST http://localhost:52222/api/filter/
+# -H'Authorization: Token ~~~'
+# -d '{
+#   "filter_id": "000",
+#   "filter_name": "키움이름조건식",
+#   "filter_title": "상승폭이 가장 빠른 종목들",
+#   "filter_date": "2021-07-31"
+# }'
 class FilterDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Filter.objects.all()
     serializer_class = FilterSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_object(self):
         filter_id = self.kwargs['filter_id']
@@ -66,7 +103,14 @@ class FilterDetailView(RetrieveUpdateDestroyAPIView):
         # q = get_object_or_404(queryset, filter_id=filter_id)
         return q
 
-
+# curl -XPOST http://localhost:52222/stock/000000/price
+# -H'Authorization: Token ~~~'
+# -d '{
+#   stocks: [{
+#       'stock_code': "", 'stock_name': "", 'high_price': "", 'low_price': "", 'open_price':"", 'close_price': "",
+#       'adj_close': "", 'volume': "", 'date': ""
+#   }, {...}, ...]
+# }'
 class PriceView(ListCreateAPIView):
     serializer_class = PriceSerializer
     model = serializer_class.Meta.model
@@ -76,6 +120,29 @@ class PriceView(ListCreateAPIView):
         queryset = Price.objects.filter(stock_code=stock_code).order_by('create_date')
         return queryset
 
+    def post(self, request, *args, **kwargs):
+        try:
+            stocks = request.data['stocks']
+            date = request.data['date']
+            for stock in stocks:
+                Price.objects.create(
+                    stock_code=stock['stock_code'],
+                    stock_name=stock['stock_name'],
+                    high_price=stock['high_price'],
+                    low_price=stock['low_price'],
+                    open_price=stock['open_price'],
+                    close_price=stock['close_price'],
+                    volume=stock['volume'],
+                    adj_close_price=stock['close_price'],
+                    create_date=stock['date'],
+                )
+        except KeyError as e:
+            return HttpResponse(status=400, content=e)
+        except Exception as e:
+            return HttpResponse(status=400, content=e)
+
+        return HttpResponse(status=201, content='create successed')
+
 
 class PriceDateRange(RetrieveUpdateAPIView):
     serializer_class = RangePriceDateSerializer
@@ -83,8 +150,13 @@ class PriceDateRange(RetrieveUpdateAPIView):
 
     def get_object(self):
         stock_code = self.kwargs['stock_code']
-        queryset = Price.objects.filter(stock_code=stock_code)
-        begin = queryset.earliest('create_date').create_date
-        end = queryset.latest('create_date').create_date
+        begin, end = None, None
+        try:
+            queryset = Price.objects.filter(stock_code=stock_code)
+            begin = queryset.earliest('create_date').create_date
+            end = queryset.latest('create_date').create_date
+        except Exception as e:
+            pass
+
         q = DateRange(begin_date=begin, end_date=end)
         return q

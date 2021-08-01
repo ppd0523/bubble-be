@@ -38,7 +38,7 @@ class Price(models.Model):
 
 
 class DateRange(models.Model):
-    begin_date = models.DateField()
+    begin_date = models.DateField(null=True)
     end_date = models.DateField()
 
     def __str__(self):
