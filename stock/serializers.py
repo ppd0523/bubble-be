@@ -5,13 +5,13 @@ from . import models
 class ReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Report
-        fields = '__all__'
+        fields = ('stock_name', 'stock_code', 'create_date', 'filter_id')
 
 
 class FilterSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Filter
-        fields = '__all__'
+        fields = ('filter_id', 'filter_title', 'filter_date')
 
 
 class PriceSerializer(serializers.ModelSerializer):
