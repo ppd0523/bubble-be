@@ -7,11 +7,11 @@ class FilterAdmin(admin.ModelAdmin):
 
 
 class ReportAdmin(admin.ModelAdmin):
-    search_fields = ['filter_id', 'stock_code', 'stock_name', 'create_date']
+    search_fields = ['filter_id', 'stock_name', 'create_date']
 
 
 class PriceAdmin(admin.ModelAdmin):
-    search_fields = ['stock_code', 'create_date']
+    search_fields = ['stock_name']
 
 
 admin.site.register(Filter, FilterAdmin)

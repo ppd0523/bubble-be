@@ -42,10 +42,6 @@ INSTALLED_APPS = [
     'debug_toolbar',
 ]
 
-# LOGIN_URL = '/api/auth/login/'
-# LOGOUT_URL = '/api/auth/logout/'
-# LOGIN_REDIRECT_URL = '/'
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
