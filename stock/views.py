@@ -3,9 +3,11 @@ from .serializers import *
 from .models import *
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveUpdateAPIView
 from rest_framework import permissions
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from sslog.logger import SimpleLogger
 import logging
+from .viewutils import groupby_data
+
 logger = SimpleLogger()
 logger.setLevel(logging.INFO)
 
@@ -39,6 +41,7 @@ class ReportView(ListCreateAPIView):
         key_q = Filter.objects.get(filter_id=foreign_key)
         queryset = Report.objects.filter(filter_id=key_q, create_date=date)
         return queryset
+        # return json.JSONEncoder({'a':10})
 
     def post(self, request, *args, **kwargs):
         try:
@@ -103,6 +106,7 @@ class FilterDetailView(RetrieveUpdateDestroyAPIView):
         # q = get_object_or_404(queryset, filter_id=filter_id)
         return q
 
+
 # curl -XPOST http://localhost:52222/stock/000000/price
 # -H'Authorization: Token ~~~'
 # -d '{
@@ -112,13 +116,15 @@ class FilterDetailView(RetrieveUpdateDestroyAPIView):
 #   }, {...}, ...]
 # }'
 class PriceView(ListCreateAPIView):
-    serializer_class = PriceSerializer
-    model = serializer_class.Meta.model
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def get_queryset(self):
+    def get(self, request, *args, **kwargs):
         stock_code = self.kwargs['stock_code']
         queryset = Price.objects.filter(stock_code=stock_code).order_by('create_date')
-        return queryset
+        data = {'stock_code': stock_code, }
+        data['days'], data['weeks'], data['months'] = groupby_data(queryset)
+
+        return JsonResponse(data, json_dumps_params={'ensure_ascii': True})
 
     def post(self, request, *args, **kwargs):
         try:

@@ -17,7 +17,7 @@ class FilterSerializer(serializers.ModelSerializer):
 class PriceSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Price
-        fields = '__all__'
+        fields = ('stock_code', 'stock_name', 'high_price', 'low_price', 'open_price', 'close_price', 'adj_close_price', 'volume', 'create_date')
 
 
 class RangePriceDateSerializer(serializers.ModelSerializer):
