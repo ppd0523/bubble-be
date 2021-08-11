@@ -12,11 +12,16 @@ class ReportAdmin(admin.ModelAdmin):
 
 
 class PriceAdmin(admin.ModelAdmin):
-    # search_fields = ['stock_name']
+    search_fields = ['stock_name']
     date_hierarchy = 'create_date'
     fieldsets = [
         (None, {'fields': ['stock_name']}),
-        (None, {'fields': ['create_date']}),
+        (None, {'fields': ['open_price']}),
+        (None, {'fields': ['close_price']}),
+        (None, {'fields': ['low_price']}),
+        (None, {'fields': ['high_price']}),
+        (None, {'fields': ['adj_close_price']}),
+        (None, {'fields': ['volume']}),
     ]
 
 
