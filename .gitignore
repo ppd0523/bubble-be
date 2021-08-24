@@ -474,3 +474,4 @@ config/settings/key.py
 
 # End of https://www.toptal.com/developers/gitignore/api/python,django,visualstudiocode,pycharm,node
 backend
+*/migrations/*

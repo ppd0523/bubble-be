@@ -8,8 +8,8 @@ from sslog.logger import SimpleLogger
 import logging
 from .viewutils import groupby_data
 
-logger = SimpleLogger()
-logger.setLevel(logging.INFO)
+# logger = SimpleLogger()
+# logger.setLevel(logging.INFO)
 
 # Login/Logout
 # curl -XPOST http://localhost:52222/auth/login/
@@ -166,3 +166,5 @@ class PriceDateRange(RetrieveUpdateAPIView):
 
         q = DateRange(begin_date=begin, end_date=end)
         return q
+
+

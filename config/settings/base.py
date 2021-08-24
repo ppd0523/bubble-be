@@ -36,7 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'stock.apps.StockConfig',
+    'stock2.apps.Stock2Config',
+    'membership.apps.MembershipConfig',
     'rest_framework.authtoken',
     'rest_auth',
     'debug_toolbar',
@@ -118,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ko'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
@@ -135,6 +136,8 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR/'.static_root'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR/'media'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -143,3 +146,5 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ]
 }
+
+AUTH_USER_MODEL = 'membership.User'
